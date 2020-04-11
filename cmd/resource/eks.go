@@ -167,10 +167,19 @@ func versionChanged(current Model, desired Model) bool {
 
 func vpcChanged(current Model, desired Model) bool {
 	desiredVpc := &ResourcesVpcConfig{}
-	copier.Copy(desiredVpc, desired.ResourcesVpcConfig)
+	err := copier.Copy(desiredVpc, desired.ResourcesVpcConfig)
+	if err != nil {
+		panic(err)
+	}
 	currentVpc := current.ResourcesVpcConfig
 	if desiredVpc.PublicAccessCidrs == nil {
 		desiredVpc.PublicAccessCidrs = []string{"0.0.0.0/0"}
+	}
+	if desiredVpc.EndpointPrivateAccess == nil {
+		desiredVpc.EndpointPrivateAccess = aws.Bool(false)
+	}
+	if desiredVpc.EndpointPublicAccess == nil {
+		desiredVpc.EndpointPublicAccess = aws.Bool(true)
 	}
 	if (!slicesEqual(currentVpc.PublicAccessCidrs, desiredVpc.PublicAccessCidrs)) ||
 		(*currentVpc.EndpointPrivateAccess != *desiredVpc.EndpointPrivateAccess) ||

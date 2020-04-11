@@ -6,9 +6,11 @@ import (
 	"github.com/aws-cloudformation/cloudformation-cli-go-plugin/cfn/handler"
 	"github.com/aws/aws-sdk-go/service/eks"
 	"log"
+	"runtime/debug"
 )
 
 func Create(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent, error) {
+	defer logPanic()
 	stage := getStage(req.CallbackContext)
 	switch stage {
 	case InitStage:
@@ -86,6 +88,7 @@ func createFinalize(req handler.Request, model *Model) handler.ProgressEvent {
 }
 
 func Read(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent, error) {
+	defer logPanic()
 	svc := eks.New(req.Session)
 	progress := readCluster(svc, model)
 	return progress, nil
@@ -93,6 +96,7 @@ func Read(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent, e
 }
 
 func Update(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent, error) {
+	defer logPanic()
 	eksClient := eks.New(req.Session)
 	clusterComplete, err := updateCluster(eksClient, model)
 	if err != nil {
@@ -113,6 +117,7 @@ func Update(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent,
 }
 
 func Delete(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent, error) {
+	defer logPanic()
 	err := deleteFunction(req.Session, model, req.CallbackContext)
 	if err != nil {
 		return errorEvent(model, err), nil
@@ -121,6 +126,14 @@ func Delete(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent,
 }
 
 func List(req handler.Request, _ *Model, _ *Model) (handler.ProgressEvent, error) {
+	defer logPanic()
 	progress := listClusters(eks.New(req.Session))
 	return progress, nil
+}
+
+func logPanic() {
+	if r := recover(); r != nil {
+		log.Println(string(debug.Stack()))
+		panic(r)
+	}
 }
