@@ -4,7 +4,7 @@
 An AWS CloudFormation resource provider for modelling Amazon EKS clusters. 
 It provides some additional functionality to the built-in resource provider:
 
-* Manage `aws-auth` ConfigMap form within CloudFormation.
+* Manage `aws-auth` ConfigMap from within CloudFormation.
 * Support for `EndpointPublicAccess`, `EndpointPrivateAccess` and 
 `PublicAccessCidrs` features.
 * Support for enabling control plane logging to CloudWatch logs.   

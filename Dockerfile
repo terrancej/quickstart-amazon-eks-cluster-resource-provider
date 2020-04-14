@@ -10,5 +10,6 @@ WORKDIR /build
 
 RUN GOPROXY=direct go mod tidy
 
-CMD make -f Makefile.package package &&\
-    mv /build/awsqs-eks-cluster.zip /output/
+RUN make -f Makefile.package package
+
+CMD mv /build/awsqs-eks-cluster.zip /output/
