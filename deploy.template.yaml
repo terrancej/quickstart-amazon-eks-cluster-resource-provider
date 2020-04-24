@@ -7,12 +7,21 @@ Parameters:
     AllowedValues:
       - 'true'
       - 'false'
+  PermissionsBoundary:
+    Type: String
+    Default: ''
 Conditions:
   CreateRole: !Equals [!Ref CreateClusterAccessRole, 'true']
+  PermissionsBoundary: !Not [!Equals [!Ref PermissionsBoundary, '']]
 Resources:
   ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
+      PermissionsBoundary:
+        Fn::If:
+          - PermissionsBoundary
+          - Ref: PermissionsBoundary
+          - Ref: AWS::NoValue
       MaxSessionDuration: 8400
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -45,6 +54,11 @@ Resources:
     Condition: CreateRole
     Type: AWS::IAM::Role
     Properties:
+      PermissionsBoundary:
+        Fn::If:
+          - PermissionsBoundary
+          - Ref: PermissionsBoundary
+          - Ref: AWS::NoValue
       RoleName: "CloudFormation-Kubernetes-VPC"
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -60,6 +74,11 @@ Resources:
   LogDeliveryRole:
     Type: AWS::IAM::Role
     Properties:
+      PermissionsBoundary:
+        Fn::If:
+          - PermissionsBoundary
+          - Ref: PermissionsBoundary
+          - Ref: AWS::NoValue
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -88,6 +107,11 @@ Resources:
   RegisterTypeRole:
     Type: AWS::IAM::Role
     Properties:
+      PermissionsBoundary:
+        Fn::If:
+          - PermissionsBoundary
+          - Ref: PermissionsBoundary
+          - Ref: AWS::NoValue
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
