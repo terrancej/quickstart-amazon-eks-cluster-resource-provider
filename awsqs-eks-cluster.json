@@ -126,6 +126,10 @@
         "EncryptionConfigKeyArn": {
             "description": "Amazon Resource Name (ARN) or alias of the customer master key (CMK).",
             "type": "string"
+        },
+        "OIDCIssuerURL": {
+            "description": "The issuer URL for the OpenID Connect identity provider.",
+            "type": "string"
         }
     },
     "additionalProperties": false,
@@ -138,7 +142,8 @@
         "/properties/Endpoint",
         "/properties/ClusterSecurityGroupId",
         "/properties/CertificateAuthorityData",
-        "/properties/EncryptionConfigKeyArn"
+        "/properties/EncryptionConfigKeyArn",
+        "/properties/OIDCIssuerURL"
     ],
     "createOnlyProperties": [
         "/properties/Name",
