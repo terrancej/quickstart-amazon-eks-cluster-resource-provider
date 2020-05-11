@@ -90,11 +90,12 @@ func createFunction(svc lambdaiface.LambdaAPI, roleArn *string, clusterName *str
 	if err != nil {
 		return err
 	}
+	funcName := FunctionNamePrefix + *l.nameSuffix
 	input := &lambda.CreateFunctionInput{
 		Code: &lambda.FunctionCode{
 			ZipFile: zip,
 		},
-		FunctionName: aws.String(FunctionNamePrefix + *clusterName),
+		FunctionName: aws.String(funcName),
 		Handler:      aws.String(Handler),
 		MemorySize:   aws.Int64(MemorySize),
 		Role:         roleArn,
@@ -106,6 +107,13 @@ func createFunction(svc lambdaiface.LambdaAPI, roleArn *string, clusterName *str
 		},
 	}
 	_, err = svc.CreateFunction(input)
+	// Resource already exists error is fine
+	if awsErr, ok := err.(awserr.Error); ok {
+		if awsErr.Code() == lambda.ErrCodeResourceConflictException {
+			log.Printf("Lambda function %v already exists: %v", funcName, awsErr.Message())
+			return nil
+		}
+	}
 	return err
 }
 
