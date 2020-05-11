@@ -90,7 +90,7 @@ func createFunction(svc lambdaiface.LambdaAPI, roleArn *string, clusterName *str
 	if err != nil {
 		return err
 	}
-	funcName := FunctionNamePrefix + *l.nameSuffix
+	funcName := FunctionNamePrefix + *clusterName
 	input := &lambda.CreateFunctionInput{
 		Code: &lambda.FunctionCode{
 			ZipFile: zip,
