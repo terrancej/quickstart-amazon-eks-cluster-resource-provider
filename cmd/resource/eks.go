@@ -51,7 +51,11 @@ func describeClusterToModel(cluster eks.Cluster, model *Model) {
 	model.CertificateAuthorityData = cluster.CertificateAuthority.Data
 	model.ClusterSecurityGroupId = cluster.ResourcesVpcConfig.ClusterSecurityGroupId
 	model.Endpoint = cluster.Endpoint
-	model.OIDCIssuerURL = cluster.Identity.Oidc.Issuer
+	if cluster.Identity != nil {
+		if cluster.Identity.Oidc != nil {
+			model.OIDCIssuerURL = cluster.Identity.Oidc.Issuer
+		}
+	}
 }
 
 func makeCreateClusterInput(model *Model) *eks.CreateClusterInput {
