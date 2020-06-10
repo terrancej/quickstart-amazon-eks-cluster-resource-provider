@@ -19,29 +19,29 @@ const (
 	CompleteStage      Stage = "Complete"
 )
 
-func stabilize(svc eksiface.EKSAPI, desiredModel *Model, desiredState string) (*Model, OperationComplete, error) {
+func stabilize(svc eksiface.EKSAPI, desiredModel *Model, desiredState string) (*Model, OperationComplete, string, error) {
 	currentModel := &Model{}
 	input := &eks.DescribeClusterInput{Name: desiredModel.Name}
 	response, err := svc.DescribeCluster(input)
 	if err != nil {
 		// if desired state is to have the cluster not found (deleted) we've succeeded
 		if matchesAwsErrorCode(err, eks.ErrCodeResourceNotFoundException) && desiredState == "DELETED" {
-			return nil, Complete, nil
+			return nil, Complete, "DELETED", nil
 		}
 		// otherwise this is an error
-		return nil, Complete, err
+		return nil, Complete, "UNKNOWN", err
 	}
 	describeClusterToModel(*response.Cluster, currentModel)
 	// status matches what we want, resource is stable
 	if *response.Cluster.Status == desiredState {
-		return currentModel, Complete, nil
+		return currentModel, Complete, *response.Cluster.Status, nil
 	}
 	// cluster is in a failed state
 	if *response.Cluster.Status == "FAILED" {
-		return currentModel, Complete, errors.New("cluster status is FAILED")
+		return currentModel, Complete, *response.Cluster.Status, errors.New("cluster status is FAILED")
 	}
 	// resource is not yet stabilized
-	return currentModel, InProgress, nil
+	return currentModel, InProgress, *response.Cluster.Status, nil
 }
 
 func getStage(context map[string]interface{}) Stage {

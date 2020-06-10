@@ -122,7 +122,7 @@ func Delete(req handler.Request, _ *Model, model *Model) (handler.ProgressEvent,
 	if err != nil {
 		return errorEvent(model, err), nil
 	}
-	return deleteCluster(eks.New(req.Session), model, req.CallbackContext), nil
+	return deleteCluster(eks.New(req.Session), model), nil
 }
 
 func List(req handler.Request, _ *Model, _ *Model) (handler.ProgressEvent, error) {

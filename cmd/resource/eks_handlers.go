@@ -9,7 +9,7 @@ import (
 
 func createCluster(svc eksiface.EKSAPI, model *Model, reInvoke bool) (OperationComplete, error) {
 	if reInvoke {
-		_, complete, err := stabilize(svc, model, "ACTIVE")
+		_, complete, _, err := stabilize(svc, model, "ACTIVE")
 		return complete, err
 	}
 	input := makeCreateClusterInput(model)
@@ -30,7 +30,7 @@ func readCluster(svc eksiface.EKSAPI, model *Model) handler.ProgressEvent {
 }
 
 func updateCluster(svc eksiface.EKSAPI, desiredModel *Model) (OperationComplete, error) {
-	currentModel, complete, err := stabilize(svc, desiredModel, "ACTIVE")
+	currentModel, complete, _, err := stabilize(svc, desiredModel, "ACTIVE")
 	if err != nil {
 		return Complete, err
 	}
@@ -64,18 +64,17 @@ func updateCluster(svc eksiface.EKSAPI, desiredModel *Model) (OperationComplete,
 	return Complete, nil
 }
 
-func deleteCluster(svc eksiface.EKSAPI, model *Model, callbackContext map[string]interface{}) handler.ProgressEvent {
-	if callbackContext != nil {
-		_, complete, err := stabilize(svc, model, "DELETED")
-		if err != nil {
-			return errorEvent(model, err)
-		}
-		if !complete {
-			return inProgressEvent(model, DeleteClusterStage)
-		}
+func deleteCluster(svc eksiface.EKSAPI, model *Model) handler.ProgressEvent {
+	_, complete, status, err := stabilize(svc, model, "DELETED")
+	if complete {
 		return successEvent(model)
 	}
-	_, err := svc.DeleteCluster(&eks.DeleteClusterInput{Name: model.Name})
+	if status == "ACTIVE" || status == "FAILED" {
+		_, createErr := svc.DeleteCluster(&eks.DeleteClusterInput{Name: model.Name})
+		if createErr != nil {
+			return errorEvent(model, createErr)
+		}
+	}
 	if err != nil {
 		return errorEvent(model, err)
 	}
