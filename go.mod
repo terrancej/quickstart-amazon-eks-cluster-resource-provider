@@ -3,8 +3,7 @@ module github.com/aws-quickstart/quickstart-amazon-eks-cluster-resource-provider
 go 1.13
 
 require (
-	github.com/avast/retry-go v2.6.0+incompatible // indirect
-	github.com/aws-cloudformation/cloudformation-cli-go-plugin v0.1.5
+	github.com/aws-cloudformation/cloudformation-cli-go-plugin v1.0.0
 	github.com/aws/aws-lambda-go v1.15.0
 	github.com/aws/aws-sdk-go v1.30.4
 	github.com/gofrs/flock v0.7.1 // indirect
@@ -19,7 +18,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/crypto v0.0.0-20200323165209-0ec3e9974c59 // indirect
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	google.golang.org/appengine v1.6.5 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
