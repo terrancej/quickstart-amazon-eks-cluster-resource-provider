@@ -40,7 +40,9 @@ func (r *Handler) List(req handler.Request) handler.ProgressEvent {
 
 // main is the entry point of the application.
 func main() {
+	log.Println("Starting main...")
 	cfn.Start(&Handler{})
+	log.Println("Completed main...")
 }
 
 type handlerFunc func(handler.Request, *resource.Model, *resource.Model) (handler.ProgressEvent, error)
