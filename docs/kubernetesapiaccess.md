@@ -8,35 +8,44 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "<a href="#roles" title="Roles">Roles</a>" : <i>[ <a href="kubernetesapiaccess-roles.md">Roles</a>, ... ]</i>,
-    "<a href="#users" title="Users">Users</a>" : <i>[ <a href="kubernetesapiaccess-users.md">Users</a>, ... ]</i>
+    "<a href="#arn" title="Arn">Arn</a>" : <i>String</i>,
+    "<a href="#username" title="Username">Username</a>" : <i>String</i>,
+    "<a href="#groups" title="Groups">Groups</a>" : <i>[ String, ... ]</i>
 }
 </pre>
 
 ### YAML
 
 <pre>
-<a href="#roles" title="Roles">Roles</a>: <i>
-      - <a href="kubernetesapiaccess-roles.md">Roles</a></i>
-<a href="#users" title="Users">Users</a>: <i>
-      - <a href="kubernetesapiaccess-users.md">Users</a></i>
+<a href="#arn" title="Arn">Arn</a>: <i>String</i>
+<a href="#username" title="Username">Username</a>: <i>String</i>
+<a href="#groups" title="Groups">Groups</a>: <i>
+      - String</i>
 </pre>
 
 ## Properties
 
-#### Roles
+#### Arn
 
 _Required_: No
 
-_Type_: List of <a href="kubernetesapiaccess-roles.md">Roles</a>
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### Users
+#### Username
 
 _Required_: No
 
-_Type_: List of <a href="kubernetesapiaccess-users.md">Users</a>
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Groups
+
+_Required_: No
+
+_Type_: List of String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

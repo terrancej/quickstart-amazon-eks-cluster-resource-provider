@@ -1,6 +1,6 @@
 # AWSQS::EKS::Cluster EncryptionConfig
 
-The encryption configuration for the cluster.
+AWS Key Management Service (AWS KMS) customer master key (CMK). Either the ARN or the alias can be used.
 
 ## Syntax
 
@@ -10,38 +10,25 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "<a href="#resources" title="Resources">Resources</a>" : <i>[ String, ... ]</i>,
-    "<a href="#provider" title="Provider">Provider</a>" : <i><a href="encryptionconfig-provider.md">Provider</a></i>
+    "<a href="#keyarn" title="KeyArn">KeyArn</a>" : <i>String</i>
 }
 </pre>
 
 ### YAML
 
 <pre>
-<a href="#resources" title="Resources">Resources</a>: <i>
-      - String</i>
-<a href="#provider" title="Provider">Provider</a>: <i><a href="encryptionconfig-provider.md">Provider</a></i>
+<a href="#keyarn" title="KeyArn">KeyArn</a>: <i>String</i>
 </pre>
 
 ## Properties
 
-#### Resources
+#### KeyArn
 
-Specifies the resources to be encrypted. The only supported value is "secrets".
-
-_Required_: No
-
-_Type_: List of String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### Provider
-
-AWS Key Management Service (AWS KMS) customer master key (CMK). Either the ARN or the alias can be used.
+Amazon Resource Name (ARN) or alias of the customer master key (CMK). The CMK must be symmetric, created in the same region as the cluster, and if the CMK was created in a different account, the user must have access to the CMK.
 
 _Required_: No
 
-_Type_: <a href="encryptionconfig-provider.md">Provider</a>
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
