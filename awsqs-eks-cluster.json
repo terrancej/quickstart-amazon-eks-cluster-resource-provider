@@ -1,7 +1,7 @@
 {
     "typeName": "AWSQS::EKS::Cluster",
     "description": "A resource that creates EKS clusters.",
-    "sourceUrl": "https://github.com/aws-quickstart/quickstart-amazon-eks-cluster-resource-provider.git",
+    "sourceUrl": "https://github.com/terrancej/quickstart-amazon-eks-cluster-resource-provider.git",
     "properties": {
         "Name": {
             "description": "The unique name to give to your cluster.",
